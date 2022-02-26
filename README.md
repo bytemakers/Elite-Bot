@@ -2,6 +2,7 @@
 
 DVS Tech Moderation Bot Free Version For Discord Source Code
 
+v1.0.0
 
 ## Contributing
 
