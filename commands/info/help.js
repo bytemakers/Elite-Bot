@@ -1,6 +1,5 @@
-const Discord = require("discord.js");
 const { MessageEmbed } = require("discord.js");
-const { Color, Prefix } = require("../../config.js");
+const { Color, Prefix } = require("../../index");
 
 module.exports = {
   name: "help",
@@ -11,14 +10,14 @@ module.exports = {
     
     message.delete();
     
-    let embed = new MessageEmbed()
-    .setColor(Color)
-    .setTitle(`${client.user.username} Commands!`)
-    .setDescription(`Use ${Prefix}Help <Command Name> For More Command Information!` + 
+    const embed = new MessageEmbed()
+      .setColor(Color)
+      .setTitle(`${client.user.username} Commands!`)
+      .setDescription(`Use ${Prefix}Help <Command Name> For More Command Information!` + 
      "`🔐`**Moderation**\n`Clear, Mute, Unmute, Tempmute, Kick,Unban, Tempban, Warn, Warnings, ResetWarns`" + "\n\n"+
     "`⌚`**Information**\n`Help")
-    .setFooter(`Requested By ${message.author.username}`)
-    .setTimestamp();
+      .setFooter(`Requested By ${message.author.username}`)
+      .setTimestamp();
     
     if (!args.length) return message.channel.send(embed);
 
@@ -26,7 +25,7 @@ module.exports = {
       client.commands.get(args[0].toLowerCase()) ||
       client.commands.get(client.aliases.get(args[0].toLowerCase()));
 
-    let embed2 = new MessageEmbed()
+    const embed2 = new MessageEmbed()
       .setColor(Color)
       .setTitle(`${cmd.name} Information!`)
       .addField(`Aliases`, cmd.aliases || "None!")
