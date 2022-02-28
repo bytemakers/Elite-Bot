@@ -1,40 +1,81 @@
-const Discord = require("discord.js");
-const fs = require("fs");
-const client = new Discord.Client();
-const { keep_alive } = require("./keep_alive");
-const { Prefix, Token, Color } = require("./config.js");
-client.commands = new Discord.Collection();
-client.aliases = new Discord.Collection();
-client.db = require("quick.db");
+// Discord Library
+const { Client, Collection } = require('discord.js')
+const client = new Client();
 
-client.on("ready", async () => {
-  console.log(`DVS Tech Bot has Been Deployed!!`);
-  client.user
-    .setActivity(`$help`, { type: "LISTENING" })
-    .catch(error => console.log(error));
+// fs ffs!
+const fs = require("fs");
+const { keep_alive } = require("./keep_alive");
+
+// Parsing Settings
+const JSON5 = require('json5');
+const settings = JSON5.parse(process.env.settings)
+
+// Secret Vars
+const botToken = settings.bot.token;
+const botPrefix = settings.bot.prefix;
+const embedColor = settings.embeds.color;
+
+// Exporting Secrets
+module.exports = {
+  token: botToken,
+  Prefix: botPrefix,
+  Color: embedColor
+}
+
+// Collection
+client.commands = new Collection();
+client.aliases = new Collection();
+
+// On Ready
+client.on("ready", () => {
+  console.log(`[!]: The Bot is ready, logged in as ${client.user.tag}`);
+  client.user.setActivity(`$help`, { type: "LISTENING" })
 });
 
+// On Message
 client.on("message", async message => {
   if (message.channel.type === "dm") return;
   if (message.author.bot) return;
   if (!message.guild) return;
-  if (!message.member)
+  if (!message.member) {
     message.member = await message.guild.fetchMember(message);
+  }
 
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>`))) {
     return message.channel.send(`Bot Prefix : ${Prefix}`);
   }
+  const Prefix = botPrefix;
+  if (!message.content.startsWith(Prefix)) return;
+
+  const args = message.content
+    .slice(Prefix.length)
+    .trim()
+    .split(" ");
+  const cmd = args.shift().toLowerCase();
+  if (cmd.length === 0) return;
+
+  let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
+
+  if (!command) return;
+  if (command) {
+    if (!message.guild.me.hasPermission("ADMINISTRATOR"))
+      return message.channel.send("I Don't Have Enough Permission To Use This Or Any Of My Commands | Require : Administrator");
+    command.run(client, message, args);
+  }
+  console.log(
+    `User : ${message.author.tag} (${message.author.id}) Server : ${message.guild.name} (${message.guild.id}) Command : ${command.name}`
+  );
 });
 
-let modules = ["fun", "info", "moderation"];
+const modules = ["fun", "info", "moderation"];
 
-modules.forEach(function(module) {
-  fs.readdir(`./commands/${module}`, function(err, files) {
+modules.forEach((module) => {
+  fs.readdir(`./commands/${module}`, (err, files) => {
     if (err)
       return new Error(
         "Missing Folder Of Commands! Example : Commands/<Folder>/<Command>.js"
       );
-    files.forEach(function(file) {
+    files.forEach((file) => {
       if (!file.endsWith(".js")) return;
       let command = require(`./commands/${module}/${file}`);
       console.log(`${command.name} Command Has Been Loaded - ✅`);
@@ -49,40 +90,9 @@ modules.forEach(function(module) {
   });
 });
 
-client.on("message", async message => {
-  if (message.channel.type === "dm") return;
-  if (message.author.bot) return;
-  if (!message.guild) return;
-  if (!message.member)
-    message.member = await message.guild.fetchMember(message);
+client.login(botToken).catch((e) => { console.log(`the token is invalid!`) })
 
-  if (!message.content.startsWith(Prefix)) return;
-
-  const args = message.content
-    .slice(Prefix.length)
-    .trim()
-    .split(" ");
-  const cmd = args.shift().toLowerCase();
-
-  if (cmd.length === 0) return;
-
-  let command =
-    client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
-
-  if (!command) return;
-
-  if (command) {
-    if (!message.guild.me.hasPermission("ADMINISTRATOR"))
-      return message.channel.send(
-        "I Don't Have Enough Permission To Use This Or Any Of My Commands | Require : Administrator"
-      );
-    command.run(client, message, args);
-  }
-  console.log(
-    `User : ${message.author.tag} (${message.author.id}) Server : ${message.guild.name} (${message.guild.id}) Command : ${command.name}`
-  );
-});
-
-client.login(Token);
-
-//Bot Coded by DVS Tech DONOT share WITHOUT credits!!
+/*
+  Bot Coded by DVS Tech
+  DONOT share WITHOUT credits!!
+*/
