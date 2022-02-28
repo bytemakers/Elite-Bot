@@ -8,7 +8,7 @@ const { keep_alive } = require("./keep_alive");
 
 // Parsing Settings
 const JSON5 = require('json5');
-const settings = JSON5.parse(process.env.settings).catch((e) => { console.log("please validate your settings.") })
+const settings = JSON5.parse(process.env.settings)
 
 // Secret Vars
 const botToken = settings.bot.token;
@@ -19,7 +19,7 @@ const embedColor = settings.embeds.color;
 module.exports = {
   token: botToken,
   Prefix: botPrefix,
-  Color: embedColor;
+  Color: embedColor
 }
 
 // Collection
