@@ -62,9 +62,6 @@ If you have any feedback, please reach out to us at devarshishimpi@gmail.com
 
 For support, email devarshishimpi@gmail.com or join our Discord Server.
 
-Discord : https://discord.gg/PhVXpxSNwj
-
-
 ## Screenshots
 
 ![App Screenshot](1.png)
