@@ -1,38 +1,32 @@
-// Discord Library
-const { Client, Collection } = require('discord.js')
-const client = new Client();
-
-// fs ffs!
 const fs = require("fs");
+
+const { Client, Collection, Intents } = require('discord.js');
 const { keep_alive } = require("./keep_alive");
 
-// Parsing Settings
-const JSON5 = require('json5');
-const settings = JSON5.parse(process.env.settings)
+const JSON5 = require("json5");
+const settings = JSON5.parse(process.env.settings);
 
-// Secret Vars
-const botToken = settings.bot.token;
-const botPrefix = settings.bot.prefix;
-const embedColor = settings.embeds.color;
+const { token, prefix, color } = settings.bot;
 
-// Exporting Secrets
-module.exports = {
-  token: botToken,
-  Prefix: botPrefix,
-  Color: embedColor
-}
 
-// Collection
-client.commands = new Collection();
-client.aliases = new Collection();
+const client = new Client({
+    intents: [
+        // necessary intents
+    ]
+});
 
-// On Ready
 client.on("ready", () => {
-  console.log(`[!]: The Bot is ready, logged in as ${client.user.tag}`);
+  console.log(`[!]: The bot is ready, logged in as ${client.user.tag}`);
   client.user.setActivity(`$help`, { type: "LISTENING" })
 });
 
-// On Message
+/* <<--------------------------------------------------------------------------------------------------------------------->>
+All of the following below have to be rewritten to use the new discord.js library,
+which utilizes the new intents system and interactions with the client instead of messages.
+
+I suggest to follow the guide at https://discordjs.guide/ for more information.
+<<--------------------------------------------------------------------------------------------------------------------->> */
+
 client.on("message", async message => {
   if (message.channel.type === "dm") return;
   if (message.author.bot) return;
@@ -42,29 +36,26 @@ client.on("message", async message => {
   }
 
   if (message.content.match(new RegExp(`^<@!?${client.user.id}>`))) {
-    return message.channel.send(`Bot Prefix : ${Prefix}`);
+    return message.channel.send(`Bot prefix : ${prefix}`);
   }
-  const Prefix = botPrefix;
-  if (!message.content.startsWith(Prefix)) return;
 
-  const args = message.content
-    .slice(Prefix.length)
-    .trim()
-    .split(" ");
+  if (!message.content.startsWith(prefix)) return;
+
+  const args = message.content.slice(prefix.length).trim().split(" ");
   const cmd = args.shift().toLowerCase();
   if (cmd.length === 0) return;
 
   let command = client.commands.get(cmd) || client.commands.get(client.aliases.get(cmd));
 
   if (!command) return;
+
   if (command) {
     if (!message.guild.me.hasPermission("ADMINISTRATOR"))
-      return message.channel.send("I Don't Have Enough Permission To Use This Or Any Of My Commands | Require : Administrator");
+      return message.channel.send("I don't have enough permission to use this or any of my commands! | Require: Administrator");
     command.run(client, message, args);
   }
-  console.log(
-    `User : ${message.author.tag} (${message.author.id}) Server : ${message.guild.name} (${message.guild.id}) Command : ${command.name}`
-  );
+  
+  console.log(`User : ${message.author.tag} (${message.author.id}) Server : ${message.guild.name} (${message.guild.id}) Command : ${command.name}`);
 });
 
 const modules = ["fun", "info", "moderation"];
@@ -73,12 +64,12 @@ modules.forEach((module) => {
   fs.readdir(`./commands/${module}`, (err, files) => {
     if (err)
       return new Error(
-        "Missing Folder Of Commands! Example : Commands/<Folder>/<Command>.js"
+        "Missing folder of commands! Example : commands/<folder>/<command>.js"
       );
     files.forEach((file) => {
       if (!file.endsWith(".js")) return;
       let command = require(`./commands/${module}/${file}`);
-      console.log(`${command.name} Command Has Been Loaded - ✅`);
+      console.log(`✅ ${command.name} command has been loaded!`);
       if (command.name) client.commands.set(command.name, command);
       if (command.aliases) {
         command.aliases.forEach(alias =>
@@ -90,7 +81,7 @@ modules.forEach((module) => {
   });
 });
 
-client.login(botToken).catch((e) => { console.log(`the token is invalid!`) })
+client.login(token).catch(err => console.log(err));
 
 /*
   Bot Coded by DVS Tech
