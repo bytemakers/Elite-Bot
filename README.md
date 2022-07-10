@@ -57,13 +57,13 @@ Start the server
 
 If you have any feedback, please reach out to us at devarshishimpi@gmail.com
 
-
-## Support
-
-For support, email devarshishimpi@gmail.com or join our Discord Server.
-
 ## Screenshots
 
 ![App Screenshot](1.png)
 ![App Screenshot](2.png)
 ![App Screenshot](3.png)
+
+## Support US
+<a href="https://www.vultr.com/?ref=9043736" target="_blank"><img src="vultr-try.JPG"/></a>
+
+<a href="https://r.honeygain.me/DEVARBD8B7" target="_blank"><img src="honeygain-try.JPG"/></a>
