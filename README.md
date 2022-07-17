@@ -1,10 +1,14 @@
 # DVS Tech Moderation Bot
 
+![Border](images/border.png)
+
 DVS Tech Moderation Bot Free Version For Discord Source Code
 
 v1.0.0
 
 ## Contributing
+
+![Border](images/border.png)
 
 Contributions are always welcome!
 
@@ -14,6 +18,8 @@ Please adhere to this project's `code of conduct`.
 
 
 ## Features
+
+![Border](images/border.png)
 
 - Ban
 - Kick
@@ -29,6 +35,8 @@ Note : Read LICENSE before use of any of DVS Tech Open Source Projects
 Download Links Alternatives : Visit DVS Tech App Store and Get the Latest Stable Build
 
 ## Deployment
+
+![Border](images/border.png)
 
 Clone the project
 
@@ -59,9 +67,22 @@ If you have any feedback, please reach out to us at devarshishimpi@gmail.com
 
 ## Screenshots
 
-![App Screenshot](1.png)
-![App Screenshot](2.png)
-![App Screenshot](3.png)
+![Border](images/border.png)
 
-## Support US
-<a href="https://www.vultr.com/?ref=9043736" target="_blank"><img src="vultr-try.JPG"/></a>
+![App Screenshot](images/1.png)
+![App Screenshot](images/2.png)
+![App Screenshot](images/3.png)
+
+## Support
+
+If you would like to support me, you can support on any of the below platforms.
+
+![Border](images/border.png)
+
+<a href="https://www.vultr.com/?ref=9043736" target="_blank"><img src="https://dvstechgithub.netlify.app/images/vultr-try.png"/></a>
+
+<a href="https://dvsdonatebtc.netlify.app/" target="_blank"><img src="https://dvstechgithub.netlify.app/images/btc-try.png"/></a>
+
+<a href="https://www.patreon.com/dvstech" target="_blank"><img src="https://dvstechgithub.netlify.app/images/patreon-try.png"/></a>
+
+<a href="https://www.buymeacoffee.com/dvstech" target="_blank"><img src="https://dvstechgithub.netlify.app/images/buymeacoffee-try.png"/></a>
