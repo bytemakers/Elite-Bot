@@ -1,10 +1,7 @@
 {
-  "//1": "describes your app and its dependencies",
-  "//2": "https://docs.npmjs.com/files/package.json",
-  "//3": "updating this file will download and update your packages",
-  "name": "hello-express",
-  "version": "0.0.1",
-  "description": "A simple Node app built on Express, instantly up and running.",
+  "name": "DVS Tech Moderation Bot",
+  "version": "1.0.0",
+  "description": "DVS Tech Moderation Bot Free Version For Discord",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
@@ -28,7 +25,7 @@
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
   },
-  "license": "MIT",
+  "license": "GPL-3.0",
   "keywords": [
     "node",
     "glitch",
