@@ -4,6 +4,7 @@ const { EmbedBuilder, PermissionFlagsBits} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
+        // this name must be lowercase and match the name of the file (without the .js)
         .setName('example')
         .setDescription('example description')
         .addStringOption(option =>  
@@ -12,9 +13,7 @@ module.exports = {
         ), 
 
     async execute(interaction) {
-    
-        //execute the command here 
-
+        //execute the command here
     }
     
 }
