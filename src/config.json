@@ -1,9 +1,5 @@
 { 
-    "token": "bruh",
-    "appID": "962018989733716088",
-    "guildID": "975538493344350238",
-
-
-    "adminRole": ""
-    
+    "token": "token here ",
+    "appID": "bots application id here",
+    "guildID": "guild id for server here"
 }
