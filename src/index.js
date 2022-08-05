@@ -11,12 +11,6 @@ const client = new Client({
 
 
 
-// // connect to the mongo atlas database and if it fails, log the error
-// try { 
-// 	mongoose.connect(config.mongoURI, { useNewUrlParser: true, useUnifiedTopology: true});
-// } catch (error) {
-// 	console.log(error);
-// }
 
 
 
