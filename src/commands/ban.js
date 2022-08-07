@@ -14,6 +14,7 @@ module.exports = {
         .addStringOption(option => option
             .setName('reason')
             .setDescription('reason for ban')
+            .setMaxLength(400)
         ), 
 
     async execute(interaction) { 
