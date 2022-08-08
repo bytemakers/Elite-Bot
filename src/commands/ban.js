@@ -3,6 +3,7 @@ const { EmbedBuilder, PermissionsBitField} = require('discord.js');
 
 
 module.exports = {
+    helpinfo : "This comand is used to ban a user from the server",
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('ban a user')

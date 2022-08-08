@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 
 module.exports = {
+    helpinfo : "This comand is used to clear a channel of messages (up to 100)", 
     data: new SlashCommandBuilder()
         .setName('clear')
         .setDescription('clear a set number of messages')
