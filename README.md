@@ -10,8 +10,6 @@ v1.0.0
 
 ## Contributing
 
-![Border](images/border.png)
-
 Contributions are always welcome!
 
 See `contributing.md` for ways to get started.
