@@ -1,10 +1,12 @@
 # Elite Moderation Bot
 
-![Border](images/border.png)
+**Made with ❤ By DVS Tech Labs**
 
 Elite Moderation Bot Free Version For Discord Source Code
 
 v1.0.0
+
+![Border](images/border.png)
 
 ## Contributing
 
