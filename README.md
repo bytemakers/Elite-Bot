@@ -1,8 +1,8 @@
-# DVS Tech Moderation Bot
+# Elite Moderation Bot
 
 ![Border](images/border.png)
 
-DVS Tech Moderation Bot Free Version For Discord Source Code
+Elite Moderation Bot Free Version For Discord Source Code
 
 v1.0.0
 
