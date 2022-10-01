@@ -1,35 +1,33 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder, PermissionsBitField} = require('discord.js');
+const { EmbedBuilder, PermissionsBitField, CommandInteraction} = require('discord.js');
 
 
 module.exports = {
-    helpinfo : "This comand is used to ban a user from the server",
+    helpinfo: "This comand is used to ban a user from the server",
     data: new SlashCommandBuilder()
         .setName('ban')
         .setDescription('ban a user')
-        .addUserOption(option => 
+        .addUserOption(option =>
             option.setName('user')
-            .setDescription('user to ban')
-            .setRequired(true)
+                .setDescription('user to ban')
+                .setRequired(true)
         )
         .addStringOption(option => option
             .setName('reason')
             .setDescription('reason for ban')
             .setMaxLength(400)
-        ), 
-
-    async execute(interaction) { 
+        ),
+    /**
+    *    * @param {CommandInteraction} interaction 
+    * @return
+    */
+    async execute(interaction) {
         const member = interaction.guild.members.cache.get(interaction.options.getUser('user').id);
         const reason = interaction.options.getString('reason');
         const moderator = interaction.guild.members.cache.get(interaction.user.id);
 
-
-        if(reason.length > 400) {
-            return interaction.reply({ content: 'Reason is too long!', ephemeral: true });
-        }
-
         // makes sure the user is in the guild
-        if(!member) {
+        if (!member) {
             return interaction.reply({ content: 'User is not in the guild', ephemeral: true });
         }
 
@@ -39,24 +37,19 @@ module.exports = {
         }
 
         // makes sure the user is not the bot
-        if(member.bot) {
+        if (member.user.bot) {
             return interaction.reply({ content: 'You cannot ban a bot!', ephemeral: true });
         }
 
         // makes sure the user is not admin
-        if(member === moderator) {
+        if (member === moderator) {
             return interaction.reply({ content: 'You cannot ban yourself!', ephemeral: true });
         }
-        
-        if(!member.bannable) {
+
+        if (!member.bannable) {
             return interaction.reply({ content: `I cannot ban this user`, ephemeral: true });
         }
 
-
-
-
-
-            
         member.ban({ reason: `${moderator} - ${reason || 'No reason provided'}` });
 
 

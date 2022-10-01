@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
-const { EmbedBuilder, PermissionsBitField } = require("discord.js");
+const { EmbedBuilder, PermissionsBitField,CommandInteraction} = require("discord.js");
 
 module.exports = {
   helpinfo:
@@ -48,13 +48,17 @@ module.exports = {
         )
         .addStringOption((option) =>
           option
-            .setName("ID")
+            .setName("id")
             .setDescription("ID of the warning to remove")
             .setRequired(true)
         )
     ),
-
-  async execute(interaction) {
+  /**
+    * @param {CommandInteraction} interaction 
+    * @return
+    */
+  async execute(interaction) {    
+    
     const subcommand = interaction.options.getSubcommand();
     const member = interaction.guild.members.cache.get(
       interaction.options.getUser("user").id
@@ -79,7 +83,7 @@ module.exports = {
     }
 
     // makes sure the user is not the bot
-    if (member.bot) {
+    if (member.user.bot) {
       return interaction.reply({
         content: "You cannot warn a bot!",
         ephemeral: true,

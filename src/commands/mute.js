@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders'); 
-const { EmbedBuilder, PermissionsBitField } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField, CommandInteraction} = require('discord.js');
 
 
 module.exports = { 
@@ -25,6 +25,11 @@ module.exports = {
                 .setRequired(true)
             )
         ),
+    /**
+     * 
+     * @param {CommandInteraction} interaction 
+     * @returns 
+     */
     async execute(interaction) { 
         const subcommand = interaction.options.getSubcommand();
         const member = interaction.guild.members.cache.get(interaction.options.getUser('user').id);
@@ -41,7 +46,7 @@ module.exports = {
         }
 
         // makes sure the user is not the bot
-        if(member.bot) {
+        if(member.user.bot) {
             return interaction.reply({ content: 'You cannot mute/unmute a bot!', ephemeral: true });
         }
 
@@ -57,14 +62,15 @@ module.exports = {
         //check if the server has a mute role 
         const muteRole = interaction.guild.roles.cache.find(role => role.name === 'Muted');
         if(!muteRole) {
-            interaction.reply({ content: `This server does not have a "Muted" role, plesae create one and rerun this command.`, ephemeral: true });
+            return interaction.reply({ content: `This server does not have a "Muted" role, plesae create one and rerun this command.`, ephemeral: true });
+            //todo, create the role automatically and create overrides on channels/categpries to make it actually functional
         } 
 
         console.log('passed all checks');
 
         // mute/unmute the user
-        if(subcommand === 'mute') {
-            member.roles.add(muteRole);
+        if(subcommand === 'mute') {            
+            member.roles.add(muteRole.id);
             interaction.reply({ content: `${member} has been muted`, ephemeral: true });
         }
         else if(subcommand === 'unmute') {

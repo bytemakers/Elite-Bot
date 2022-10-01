@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder, PermissionsBitField} = require('discord.js');
+const { EmbedBuilder, PermissionsBitField, CommandInteraction} = require('discord.js');
 
 
 module.exports = {
@@ -17,25 +17,27 @@ module.exports = {
             .setDescription('reason for kick')
             .setMaxLength(400)
         ), 
-
+    /**
+     * 
+     * @param {CommandInteraction} interaction 
+     * @returns 
+     */
     async execute(interaction) { 
         const member = interaction.guild.members.cache.get(interaction.options.getUser('user').id);
         const reason = interaction.options.getString('reason');
         const moderator = interaction.guild.members.cache.get(interaction.user.id);
 
-
         // makes sure the user is in the guild
         if(!member) {
             return interaction.reply({ content: 'User is not in the guild', ephemeral: true });
         }
-
         // makes sure the user has the kick permission
         if (!moderator.permissions.has(PermissionsBitField.Flags.KickMembers)) {
             return interaction.reply({ content: 'You do not have permission to kick members!', ephemeral: true });
         }
 
         // makes sure the user is not the bot
-        if(member.bot) {
+        if(member.user.bot) {
             return interaction.reply({ content: 'You cannot kick a bot!', ephemeral: true });
         }
 
@@ -48,13 +50,7 @@ module.exports = {
             return interaction.reply({ content: `I cannot kick this user`, ephemeral: true });
         }
 
-
-
-
-
-            
         member.kick({ reason: `${moderator} - ${reason || 'No reason provided'}` });
-
 
         const kickEmbed = new EmbedBuilder()
             .setTitle('Kicked')
