@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const { EmbedBuilder, PermissionsBitField, CommandInteraction } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField, CommandInteraction} = require('discord.js');
 
 
 module.exports = {
@@ -18,21 +18,25 @@ module.exports = {
             .setMaxLength(400)
         ),
     /**
-     * 
-     * @param {CommandInteraction} interaction 
-     * @returns 
-     */
+    *    * @param {CommandInteraction} interaction 
+    * @return
+    */
     async execute(interaction) {
         const member = interaction.guild.members.cache.get(interaction.options.getUser('user').id);
-        const reason = interaction.options.getString('reason') ?? "";
+        const reason = interaction.options.getString('reason');
         const moderator = interaction.guild.members.cache.get(interaction.user.id);
+
+        // makes sure the user is in the guild
+        if (!member) {
+            return interaction.reply({ content: 'User is not in the guild', ephemeral: true });
+        }
 
         // makes sure the user has the ban permission
         if (!moderator.permissions.has(PermissionsBitField.Flags.BanMembers)) {
             return interaction.reply({ content: 'You do not have permission to ban members!', ephemeral: true });
         }
 
-        // makes sure the user is not the bot        
+        // makes sure the user is not the bot
         if (member.user.bot) {
             return interaction.reply({ content: 'You cannot ban a bot!', ephemeral: true });
         }
@@ -45,11 +49,6 @@ module.exports = {
         if (!member.bannable) {
             return interaction.reply({ content: `I cannot ban this user`, ephemeral: true });
         }
-
-
-
-
-
 
         member.ban({ reason: `${moderator} - ${reason || 'No reason provided'}` });
 
