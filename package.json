@@ -1,0 +1,25 @@
+{
+  "name": "dvs-tech-moderation-bot",
+  "version": "1.0.0",
+  "description": "![Border](images/border.png)",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mini51/DVS-Tech-Moderation-Bot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mini51/DVS-Tech-Moderation-Bot/issues"
+  },
+  "homepage": "https://github.com/Mini51/DVS-Tech-Moderation-Bot#readme",
+  "dependencies": {
+    "@discordjs/rest": "^1.0.1",
+    "discord.js": "^14.1.2",
+    "mongodb": "^4.10.0",
+    "short-unique-id": "^4.4.4"
+  }
+}
