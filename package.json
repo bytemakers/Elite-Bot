@@ -4,7 +4,7 @@
   "description": "![Border](images/border.png)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js"
   },
   "repository": {
     "type": "git",
@@ -18,6 +18,8 @@
   "homepage": "https://github.com/Mini51/DVS-Tech-Moderation-Bot#readme",
   "dependencies": {
     "@discordjs/rest": "^1.0.1",
-    "discord.js": "^14.1.2"
+    "discord.js": "^14.1.2",
+    "mongodb": "^4.10.0",
+    "short-unique-id": "^4.4.4"
   }
 }
