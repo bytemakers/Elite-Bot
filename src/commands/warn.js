@@ -1,5 +1,8 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionsBitField,CommandInteraction} = require("discord.js");
+const ShortUniqueId = require('short-unique-id');
+const { addWarning, getWarning, removeWarning } = require("../data/db");
+const uniqueId = new ShortUniqueId()
 
 module.exports = {
   helpinfo:
@@ -63,7 +66,7 @@ module.exports = {
     const member = interaction.guild.members.cache.get(
       interaction.options.getUser("user").id
     );
-    const guild = interaction.guild;
+    
     const moderator = interaction.guild.members.cache.get(interaction.user.id);
 
     // Checks before mute or unmute
@@ -99,82 +102,73 @@ module.exports = {
     }
 
     // IMPORTANT THIS IS WHERE THE WARN COMMAND IS HANDLED
-
+    await interaction.deferReply() //prevents timeout
     if (subcommand === "warn") {
       const reason = interaction.options.getString("reason");
-
-      /* 
-        This is where you need to write the code to interact with the database for when a user is warned
-
-        you can get the targeted user from the `member` variable
-        you can get the moderator from the `moderator` variable
-        you cant get the reason from the `reason` variable
-        you can get the guild from the `guild` variable
-      */
-
-      //reply to the slash command with a succesfful message
-      interaction.reply({
-        content: `${moderator} has warned ${member.user.tag} for ${reason}`,
+      let ID = uniqueId()
+      //adding the warning to db
+      addWarning({
+        userid: member.id,
+        guildid: interaction.guild.id,
+        modid: moderator.user.id,
+        reason: reason, warningid: ID
+      })
+      return interaction.editReply({
+        content: `${moderator} warned ${member.user.tag} for ${reason} with ID: ${ID}`,
       });
+
     } else if (subcommand === "list") {
-      /* 
-        This is where you need to write the code to interact with the database for when a admin is requesting a list of warnings for a user
+      
+      let res = await getWarning(member.id)
+      
+      //check if user has a valid record in db
+      if (
+        res == null ||
+        !(interaction.guild.id in res.guilds) ||
+        Object.keys(res.guilds[interaction.guild.id]).length == 0) {
+        return interaction.editReply('No warnings found!')
+      }
 
-        you can get the targeted user from the `member` variable
-        you can get the moderator from the `moderator` variable
-        you cant get the reason from the `reason` variable
-        you can get the guild from the `guild` variable
-      */
-
-      const mockWarnings = [
-        {
-          id: "some random id dosnt matter how it is generated",
-          moderator: "Moderator#1234",
-          reason: "This is a mock warning",
-          date: "2020-01-01",
-        },
-        {
-          id: "some random id dosnt matter how it is generated",
-          moderator: "Moderator#1234",
-          reason: "This is a mock warning",
-          date: "2020-01-02",
-        },
-      ];
-
-      // use this embed to display the list of warnings
+      let warnings = res.guilds[interaction.guild.id]//user warnings
+      var warningFields = [];
+      for (id in warnings) {
+        let date = new Date(warnings[id].time)
+        warningFields.push(
+          {
+            id: id,
+            moderator: `${interaction.guild.members.cache.get(warnings[id].mod)?.user?.tag??"unknown"}`,
+            reason: warnings[id].reason,
+            date: `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`
+          }
+        )
+      }
+      warningFields = warningFields.slice(0,25)// only showing top 25 because discord limitation      
       const ResponseEmbed = new EmbedBuilder()
         .setTitle("Warnings for " + member.user.tag)
         .addFields(
-          mockWarnings.map((warning) => {
+          warningFields.map((warning) => {
             return {
               name: `${warning.moderator} - ${warning.id}`,
-              value: `${warning.reason}`,
+              value: `${warning.reason}\n${warning.date}`,
             };
           })
         )
         .setColor("#ff0000")
         .setTimestamp();
 
-      //reply to the slash command with a succesfful message
-      interaction.reply({
+      return interaction.editReply({
         embeds: [ResponseEmbed],
       });
     } else if (subcommand === "remove") {
-      const ID = interaction.options.getString("ID");
-
-      /*
-        This is where you need to write the code to interact with the database for when a admin is removing a warning from a user
-
-        you can get the id of the warning from the `ID` variable
-        you can get the targeted user from the `member` variable
-        you can get the moderator from the `moderator` variable
-        you can get the guild from the `guild` variable
-
-        */
-
-      interaction.reply({
+      const ID = interaction.options.getString("id");      
+      var res = await removeWarning({userid: member.user.id, warningid: ID, guildid: interaction.guild.id})
+      if(res) return interaction.editReply({
         content: `${moderator} has removed a warning from ${member.user.tag}`,
       });
+      return interaction.editReply({
+        content: `Something went wrong couldn't remove warning`,
+      });
+      
     }
   },
 };
