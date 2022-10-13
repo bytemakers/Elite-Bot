@@ -1,0 +1,2 @@
+This is where the logs will go keep this file so that it is on the github so people dont have to create folder first 
+Logs are now visible on the github page since they are not on the gitignore list

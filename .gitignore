@@ -1,6 +1,9 @@
 # Logs
-logs
-*.log
+
+# removed logs from the ignore list so people dont have to add a folder to get the bot to work just make sure your logs are gone before making a pr lol
+
+#logs
+#*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
