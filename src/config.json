@@ -1,7 +1,7 @@
-{ 
-    "token": "",
-    "appID": "",
-    "guildID": "",
-    "mongoUser":"",
-    "mongoPass":""
+{
+  "token": "",
+  "appID": "",
+  "guildID": "",
+  "mongoUser": "",
+  "mongoPass": ""
 }

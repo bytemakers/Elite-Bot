@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionsBitField, time } = require("discord.js");
-const { version } = require("../../package.json");
+const { version } = require("../../../package.json");
 const fs = require("fs");
 const axios = require("axios");
 module.exports = {

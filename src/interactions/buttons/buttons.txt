@@ -1,0 +1,18 @@
+The buttons will go in this folder this is a example of what it would look like
+
+
+module.exports = {
+  data: {
+    customId: "verifyButton",  <-- this is the button id of the button
+    usedFor: "verify", <-- what command this is used for note: this is not required just here for people to know what it is used for
+    type: "BUTTON", <-- this is the type of button
+  },
+
+  /**
+   * @param {CommandInteraction} interaction
+   * @return
+   */
+  async execute(interaction) {
+    interaction.reply("This is a example of what it would look like")
+  },
+};

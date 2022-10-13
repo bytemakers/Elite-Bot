@@ -1,37 +1,29 @@
-const { Client, GatewayIntentBits, Collection } = require("discord.js");
-const fs = require("fs");
-const config = require("./config.json"); 
+/*
+  all the magic happens in ./core/client.js 
+  this is where the bot starts though
+*/
 
+const { GatewayIntentBits } = require("discord.js");
+const BotClient = require("./core/client");
+const { token, guildID, appID } = require("./config.json");
+const client = new BotClient({
+  intents: [GatewayIntentBits.Guilds], // this is the only intent you need for slash commands to work
 
-const client = new Client({ 
-    intents : [ 
-        GatewayIntentBits.Guilds
-    ]
+  paths: {
+    // this is where you put the paths to your files
+    eventPath: "src/events",
+    commandsPath: "src/interactions/commands", // this is where you put your slash commands
+    buttonsPath: "src/interactions/buttons", // this is for buttons
+    selectMenusPath: "src/interactions/selectMenus", // this is for the select menus
+    ModalsPath: "src/interactions/modals", // this is for the modal files
+  },
+  loggerInfo: {
+    logPath: "/logs", // this is where the logs will be stored
+    logColor: true, // true or false
+    logTime: true, // true or false
+  },
 });
 
+client.build(token, guildID, appID);
 
-// command handler
-// handling the interaction commands we are going to use ./events/interactionCreate.js so that this is all centralized 
-client.commands = new Collection();
-const commandFiles = fs.readdirSync(__dirname + '/commands').filter(file => file.endsWith('.js'));
-
-for (const file of commandFiles) {
-	const command = require(`./commands/${file}`);
-	client.commands.set(command.data.name, command);
-}
-
-
-//event handler
-const eventFiles = fs.readdirSync(__dirname + '/events').filter(file => file.endsWith('.js'));
-
-for (const file of eventFiles) {
-	const event = require(`./events/${file}`);
-	if (event.once) {
-		client.once(event.name, (...args) => event.execute(...args));
-	} else {
-		client.on(event.name, (...args) => event.execute(...args));
-	}
-}
-
-
-client.login(config.token);
+module.exports = client;

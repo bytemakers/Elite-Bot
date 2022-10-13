@@ -1,0 +1,17 @@
+the slect menus will go in this folder this is just a example of it should look like
+
+module.exports = {
+  data: {
+    customId: "selfrolesSlect",
+    usedFor: "selfroles",
+    type: "SELECT_MENU",
+  },
+
+  /**
+   * @param {CommandInteraction} interaction
+   * @return
+   */
+  async execute(interaction) {
+    interaction.reply('select menu submited')
+  },
+};
