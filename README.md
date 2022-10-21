@@ -2,9 +2,9 @@
 
 **Made with ❤ By DVS Tech Labs**
 
-Elite Moderation Bot Free Version For Discord Source Code
+Elite Moderation Bot Free Version For Discord
 
-v1.0.0
+v2.0.0
 
 ![Border](images/border.png)
 
