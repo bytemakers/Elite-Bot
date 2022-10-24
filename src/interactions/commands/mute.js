@@ -9,7 +9,7 @@ module.exports = {
     .addSubcommand((subcommand) =>
       subcommand
         .setName("add")
-        .setDescription("mute a user")
+        .setDescription("mute a user for 28 days")
         .addUserOption((option) =>
           option.setName("user").setDescription("user to mute").setRequired(true)
         )
@@ -52,26 +52,18 @@ module.exports = {
       return errorSoft(interaction, "You cannot mute/unmute yourself!");
     }
 
-    if (!member.manageable) {
+    if (!member.manageable || !member.moderatable) {
       return errorSoft(interaction, "I cannot mute/unmute this user");
     }
-
-    //check if the server has a mute role
-    const muteRole = interaction.guild.roles.cache.find((role) => role.name === "Muted");
-    if (!muteRole) {
-      return errorSoft(interaction, `This server does not have a "Muted" role, plesae create one and rerun this command.`);
-      //todo, create the role automatically and create overrides on channels/categpries to make it actually functional
-    }
-
     console.log("passed all checks");
 
     // mute/unmute the user
     if (subcommand === "add") {
-      member.roles.add(muteRole.id);
-      success(interaction, `${member} has been muted`)
+      member.timeout(1000 * 60 * 60 * 24 * 28)//28 days
+      success(interaction, "Muted", `${member} has been muted for 28 days!`)
     } else if (subcommand === "remove") {
-      member.roles.remove(muteRole);
-      success(interaction, `${member} has been unmuted`)
+      member.timeout(null)
+      success(interaction, "Unmuted", `${member} has been unmuted!`)
     }
   },
 };
