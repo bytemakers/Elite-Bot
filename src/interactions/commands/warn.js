@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionsBitField, CommandInteraction } = require("discord.js");
 const ShortUniqueId = require("short-unique-id");
 const { addWarning, getWarning, removeWarning } = require("../../data/db");
+const { errorSoft } = require("../embeds");
 const uniqueId = new ShortUniqueId();
 
 module.exports = {
@@ -11,7 +12,7 @@ module.exports = {
     .setDescription("Warn a user or see a list of warnings")
     .addSubcommand((subcommand) =>
       subcommand
-        .setName("warn")
+        .setName("add")
         .setDescription("warn a user")
         .addUserOption((option) =>
           option.setName("user").setDescription("user to mute").setRequired(true)
@@ -55,39 +56,28 @@ module.exports = {
 
     // Checks before mute or unmute
     if (!member) {
-      return interaction.reply({
-        content: "User is not in the guild",
-        ephemeral: true,
-      });
+      return errorSoft(interaction, "User is not in the guild");
     }
 
     // makes sure the user has the kick permission
     if (!moderator.permissions.has(PermissionsBitField.Flags.ModerateMembers)) {
-      return interaction.reply({
-        content: "You do not have permission to mute/unmute members!",
-        ephemeral: true,
-      });
+      return errorSoft(interaction, "You do not have permission to mute/unmute members!");
     }
 
     // makes sure the user is not the bot
     if (member.user.bot) {
-      return interaction.reply({
-        content: "You cannot warn a bot!",
-        ephemeral: true,
-      });
+      return errorSoft(interaction, "You cannot warn a bot!");
     }
 
     // makes sure the user is not admin
     if (member === moderator) {
-      return interaction.reply({
-        content: "You cannot do this to yourself!",
-        ephemeral: true,
-      });
+      return errorSoft(interaction, "You cannot do this to yourself!");
+      
     }
 
     // IMPORTANT THIS IS WHERE THE WARN COMMAND IS HANDLED
     await interaction.deferReply(); //prevents timeout
-    if (subcommand === "warn") {
+    if (subcommand === "add") {
       const reason = interaction.options.getString("reason");
       let ID = uniqueId();
       //adding the warning to db
