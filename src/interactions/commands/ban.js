@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionsBitField, CommandInteraction } = require("discord.js");
+const { errorSoft } = require("../embeds");
 
 module.exports = {
   helpinfo: "This comand is used to ban a user from the server",
@@ -23,29 +24,26 @@ module.exports = {
 
     // makes sure the user is in the guild
     if (!member) {
-      return interaction.reply({ content: "User is not in the guild", ephemeral: true });
+      return errorSoft(interaction, "User is not in the guild")
     }
 
     // makes sure the user has the ban permission
     if (!moderator.permissions.has(PermissionsBitField.Flags.BanMembers)) {
-      return interaction.reply({
-        content: "You do not have permission to ban members!",
-        ephemeral: true,
-      });
+      return errorSoft(interaction, "You do not have permission to ban members!")
     }
 
     // makes sure the user is not the bot
     if (member.user.bot) {
-      return interaction.reply({ content: "You cannot ban a bot!", ephemeral: true });
+      return errorSoft(interaction, 'You cannot ban a bot!')
     }
 
     // makes sure the user is not admin
     if (member === moderator) {
-      return interaction.reply({ content: "You cannot ban yourself!", ephemeral: true });
+      return errorSoft(interaction, "You cannot ban yourself!")      
     }
 
     if (!member.bannable) {
-      return interaction.reply({ content: `I cannot ban this user`, ephemeral: true });
+      return errorSoft(interaction, "I cannot ban this user")
     }
 
     member.ban({ reason: `${moderator} - ${reason || "No reason provided"}` });
