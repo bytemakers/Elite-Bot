@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionsBitField, CommandInteraction } = require("discord.js");
-
+const { errorSoft } = require('../embeds')
 module.exports = {
   helpinfo: "This comand is used to kick a user from the server",
   data: new SlashCommandBuilder()
@@ -24,28 +24,25 @@ module.exports = {
 
     // makes sure the user is in the guild
     if (!member) {
-      return interaction.reply({ content: "User is not in the guild", ephemeral: true });
+      return errorSoft(interaction, "User is not in the guild")
     }
     // makes sure the user has the kick permission
     if (!moderator.permissions.has(PermissionsBitField.Flags.KickMembers)) {
-      return interaction.reply({
-        content: "You do not have permission to kick members!",
-        ephemeral: true,
-      });
+      return errorSoft(interaction, "You do not have permission to kick members!")
     }
 
     // makes sure the user is not the bot
     if (member.user.bot) {
-      return interaction.reply({ content: "You cannot kick a bot!", ephemeral: true });
+      return errorSoft(interaction, "You cannot kick a bot!")
     }
 
     // makes sure the user is not admin
     if (member === moderator) {
-      return interaction.reply({ content: "You cannot kick yourself!", ephemeral: true });
+      return errorSoft(interaction, "You cannot kick yourself!")
     }
 
     if (!member.kickable) {
-      return interaction.reply({ content: `I cannot kick this user`, ephemeral: true });
+      return errorSoft(interaction, "I cannot kick this user")
     }
 
     member.kick({ reason: `${moderator} - ${reason || "No reason provided"}` });

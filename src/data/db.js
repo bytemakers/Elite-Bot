@@ -1,6 +1,6 @@
 const MongoClient = require("mongodb").MongoClient;
 const config = require("../config.json");
-const uri = `mongodb+srv://${config.mongoUser}:${config.mongoPass}@cluster0.awzkqo3.mongodb.net/?retryWrites=true&w=majority`;
+const uri = config.mongoUri;
 var client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 const collection = client.db("elite").collection("warnings");
 

@@ -8,7 +8,7 @@ module.exports = {
 
   async execute(interaction) {
     //get the helpinfo from each command file
-    const commands = fs.readdirSync("../src/commands");
+    const commands = fs.readdirSync(__dirname);
     const commandList = [];
     for (const command of commands) {
       const commandData = require(`./${command}`);

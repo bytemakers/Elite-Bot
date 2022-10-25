@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require("@discordjs/builders");
 const { EmbedBuilder, PermissionsBitField } = require("discord.js");
-
+const { errorSoft, success } = require('../embeds')
 module.exports = {
   helpinfo: "This comand is used to clear a channel of messages (up to 100)",
   data: new SlashCommandBuilder()
@@ -20,13 +20,11 @@ module.exports = {
     const amount = interaction.options.getInteger("number");
     const channel = interaction.channel;
     if (!admin.permissions.has(PermissionsBitField.Flags.ManageMessages)) {
-      return interaction.reply({
-        content: "You do not have permission to clear messages!",
-        ephemeral: true,
-      });
+      return errorSoft(interaction, "You do not have permission to clear messages!");
+
     }
 
     await channel.bulkDelete(amount);
-    interaction.reply({ content: `Cleared ${amount} messages!`, ephemeral: true });
+    success(interaction, `Cleared ${amount} messages!`);
   },
 };
