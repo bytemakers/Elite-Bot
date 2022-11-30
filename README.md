@@ -38,25 +38,36 @@ Download Links Alternatives : Visit DVS Tech App Store and Get the Latest Stable
 
 ![Border](images/border.png)
 
-Clone the project
+1. Clone the project
 
 ```bash
   git clone https://github.com/DVS-Tech-Open-Source-Projects/DVS-Tech-Moderation-Bot.git
 ```
 
-Go to the project directory
+2. Go to the project directory
 
 ```bash
   cd DVS-Tech-Moderation-Bot
 ```
 
-Install dependencies
+3. Install dependencies
 
 ```bash
   npm install
 ```
 
-Start the server
+4. Fill out all the config file
+
+```json
+{
+  "token": "bot token",
+  "appID": "app id of your discord application",
+  "guildID": "ID of your discord server, remove if you are hosting on for multiple servers", 
+  "mongoUri": "URI to your mongodb db"
+}
+```
+
+5. Start the server
 
 ```bash
   node index.js
